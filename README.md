@@ -78,6 +78,17 @@ postgres=# GRANT ALL PRIVILEGES ON DATABASE catalog TO catalog;
 
 9. Exit from user "postgres" by typing exit
 
+
+## Install virtual environment, Flask and the project's dependencies
+1. Install pip, the tool for installing Python packages: $ sudo apt-get install python-pip.
+2. If virtualenv is not installed, use pip to install it using the following command: $ sudo pip install virtualenv.
+3. Move to the catalog folder: $ cd /var/www/catalog. Then create a new virtual environment with the following command: $ sudo virtualenv venv.
+4. Activate the virtual environment: $ source venv/bin/activate.
+5. Change permissions to the virtual environment folder: $ sudo chmod -R 777 venv.
+6. Install Flask: $ pip install Flask.
+7. Install all the other project's dependencies: $ pip install bleach httplib2 request oauth2client sqlalchemy python-psycopg2.
+(You may need to use sudo for pip installation)
+
 ## Install git, clone and setup your Catalog App project.
 1. Install Git using sudo apt-get install git
 2. Use cd /var/www to move to the /var/www directory
@@ -85,36 +96,59 @@ postgres=# GRANT ALL PRIVILEGES ON DATABASE catalog TO catalog;
 4. Move inside this directory using cd catalog
 5. Clone the Catalog App to the virtual machine git clone https://github.com/rphadol/Catalog-App
 6. Rename the project's name sudo mv ./Catalog-App ./catalog
-7. Move to the inner catalog directory using cd catalog
+7. Move to the inner catalog directory using cd catalog ( /var/www/catalog/catalog)
 8. Rename project.py to __init__.py using sudo mv project.py __init__.py
-9. Edit database_setup.py, project.py and lotsofdata.py and change 'engine = create_engine('sqlite:///catalog.db')' to engine = create_engine('postgresql://catalog:password@localhost/catalog')
+9. Edit database_setup.py, project.py and lotsofdata.py and change 
+            engine = create_engine('sqlite:///catalog.db') to 
+            engine = create_engine('postgresql://catalog:sillypassword@localhost/catalog')
 10. Install pip sudo apt-get install python-pip
 11. Use pip to install dependencies sudo pip install -r requirements.txt
 12. Install psycopg2 sudo apt-get -qqy install postgresql python-psycopg2
-13. To Create database schema  run: sudo python database_setup.py
+13. Setup the database with: $ python /var/www/catalog/catalog/python database_setup.py
 14. to populate data run: sudo python lotsofdata.py
+15.cd catalog directory and create catalog.wsgi file 
+
+                  cd /var/www/FlaskApp
+                  sudo nano flaskapp.wsgi 
+and copy the following code and save it
+
+            activate_this = '/var/www/catalog/venv/bin/activate_this.py'
+            execfile(activate_this, dict(__file__=activate_this))
+
+            import sys
+            import logging
+            logging.basicConfig(stream=sys.stderr)
+            sys.path.insert(0, "/var/www/catalog/")
+
+            from catalog import app as application
+            application.secret_key = 'super_secret_key'
+            
+  Now in catalog directory you will see two things: catalog and catalog.wsgi        
 
 ## Configure and Enable a New Virtual Host
-Create FlaskApp.conf to edit: sudo nano /etc/apache2/sites-available/FlaskApp.conf
+Create catalog.conf to edit: sudo nano /etc/apache2/sites-available/catalog.conf
 
 Add the following lines of code to the file to configure the virtual host.
-
             <VirtualHost *:80>
-                  ServerName 52.24.125.52
-                  WSGIDaemonProcess catalog python-path=/home/grader/.local/lib/python2.7/site-packages
-                  WSGIScriptAlias / /var/www/catalog/catalog.wsgi
-                  <Directory /var/www/catalog/catalog/>
-                        Order allow,deny
-                        Allow from all
-                  </Directory>
-                  Alias /static /var/www/catalog/catalog/static
-                  <Directory /var/www/catalog/catalog/static/>
-                        Order allow,deny
-                        Allow from all
-                  </Directory>
-                  ErrorLog ${APACHE_LOG_DIR}/error.log
-                  LogLevel warn
-                  CustomLog ${APACHE_LOG_DIR}/access.log combined
+                ServerName 18.222.164.3
+                ServerAlias 18.222.164.3.xip.io
+                ServerAdmin admin@18.222.164.3
+                WSGIProcessGroup catalog
+                WSGIDaemonProcess catalog python-path=/var/www/catalog:/var/www/catalog/venv/lib/python2.7/site-packages
+                WSGIScriptAlias / /var/www/catalog/catalog.wsgi
+                <Directory /var/www/catalog/catalog/>
+                    Order allow,deny
+                    Allow from all
+                </Directory>
+                Alias /static /var/www/catalog/catalog/static/
+                <Directory /var/www/catalog/catalog/static/>
+                    Order allow,deny
+                    Allow from all
+                </Directory>
+                ErrorLog ${APACHE_LOG_DIR}/error.log
+                LogLevel warn
+                CustomLog ${APACHE_LOG_DIR}/access.log combined
             </VirtualHost>
-            
+
+
 Enable the virtual host with the following command: sudo a2ensite catalog
