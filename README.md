@@ -65,13 +65,24 @@ Configure the Uncomplicated Firewall (UFW) to only allow incoming connections fo
 2. Restart Apache sudo service apache2 restart   
 
 ## Install and configure PostgreSQL
-1. Install PostgreSQL sudo apt-get install postgresql
+1. Install PostgreSQL 
+
+            sudo apt-get install postgresql
 
 2. Check if no remote connections are allowed sudo vim /etc/postgresql/9.3/main/pg_hba.conf
 
-3. Login as user "postgres" sudo su - postgres
+                        local   all             postgres                                peer
+                        local   all             all                                     peer
+                        host    all             all             127.0.0.1/32            md5
+                        host    all             all             ::1/128                 md5
 
-4. Get into postgreSQL shell psql
+3. Login as user "postgres" 
+
+                        sudo su - postgres
+
+4. Get into postgreSQL shell 
+                        
+                        psql
 
 5. Create a new database named catalog and create a new user named catalog in postgreSQL shell
 
@@ -79,11 +90,12 @@ Configure the Uncomplicated Firewall (UFW) to only allow incoming connections fo
             postgres=# CREATE USER catalog;
             
 6. Set a password for user catalog
-   postgres=# ALTER ROLE catalog WITH PASSWORD 'password';
+
+            postgres=# ALTER ROLE catalog WITH PASSWORD 'password';
    
 7. Give user "catalog" permission to "catalog" application database
 
-postgres=# GRANT ALL PRIVILEGES ON DATABASE catalog TO catalog;
+            postgres=# GRANT ALL PRIVILEGES ON DATABASE catalog TO catalog;
 
 8. Quit postgreSQL postgres=# \q
 
