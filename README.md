@@ -28,7 +28,7 @@ Application URL: http://18.222.164.3.xip.io/
 2. Log into the remote VM as root user through ssh and create the following file: $ touch /home/grader/.ssh/authorized_keys.
 3. Copy the content of the udacity_key.pub file from your local machine to the /home/grader/.ssh/authorized_keys file you just created on the remote VM. 
 4. Then change some permissions:
-      $ sudo chmod 700 /home/grader/.ssh.
-      $ sudo chmod 644 /home/grader/.ssh/authorized_keys.
+      a. $ sudo chmod 700 /home/grader/.ssh.
+      b. $ sudo chmod 644 /home/grader/.ssh/authorized_keys.
 5. Finally change the owner from root to grader: $ sudo chown -R grader:grader /home/grader/.ssh.
 6. Now you are able to log into the remote VM through ssh with the following command: $ ssh -i ~/.ssh/udacity_key.rsa grader@52.34.208.247
