@@ -13,10 +13,10 @@ Application URL: http://18.222.164.3.xip.io/
 
 # Steps to configure Linux Server
 ## Create a new user named grader and grant this user sudo permissions.
-1. Log into the remote VM as root user through ssh: $ ssh root@18.222.164.3.
-2. Add a new user called grader: $ sudo adduser grader.
-3. Create a new file under the suoders directory: $ sudo nano /etc/sudoers.d/grader. 
-4. Fill that newly created file with the following line of text: "grader ALL=(ALL:ALL) ALL", then save it.
+      1. Log into the remote VM as root user through ssh: $ ssh root@18.222.164.3.
+      2. Add a new user called grader: $ sudo adduser grader.
+      3. Create a new file under the suoders directory: $ sudo nano /etc/sudoers.d/grader. 
+      4. Fill that newly created file with the following line of text: "grader ALL=(ALL:ALL) ALL", then save it.
 
 ## Update all currently installed packages
 1. Type and run  $ sudo apt-get update.
