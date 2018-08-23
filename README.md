@@ -13,10 +13,10 @@ Application URL: http://18.222.164.3.xip.io/
 
 # Steps to configure Linux Server
 ## Create a new user named grader and grant this user sudo permissions.
-      1. Log into the remote VM as root user through ssh: $ ssh root@18.222.164.3.
-      2. Add a new user called grader: $ sudo adduser grader.
-      3. Create a new file under the suoders directory: $ sudo nano /etc/sudoers.d/grader. 
-      4. Fill that newly created file with the following line of text: "grader ALL=(ALL:ALL) ALL", then save it.
+1. Log into the remote VM as root user through ssh: $ ssh root@18.222.164.3.
+2. Add a new user called grader: $ sudo adduser grader.
+3. Create a new file under the suoders directory: $ sudo nano /etc/sudoers.d/grader. 
+4. Fill that newly created file with the following line of text: "grader ALL=(ALL:ALL) ALL", then save it.
 
 ## Update all currently installed packages
 1. Type and run  $ sudo apt-get update.
@@ -46,10 +46,12 @@ Configure the Uncomplicated Firewall (UFW) to only allow incoming connections fo
                   sudo ufw allow 80/tcp
                   sudo ufw allow 123/udp
                   sudo ufw enable 
+                  
 ## Install and configure Apache to serve a Python mod_wsgi application
 1. Install Apache sudo apt-get install apache2
 2. Install mod_wsgi sudo apt-get install python-setuptools libapache2-mod-wsgi
-3. Restart Apache sudo service apache2 restart   
+3. Install mod_wsgi with the following command: $ sudo apt-get install libapache2-mod-wsgi python-dev.
+4. Restart Apache sudo service apache2 restart   
 
 ## Install and configure PostgreSQL
 1. Install PostgreSQL sudo apt-get install postgresql
@@ -76,3 +78,43 @@ postgres=# GRANT ALL PRIVILEGES ON DATABASE catalog TO catalog;
 
 9. Exit from user "postgres" by typing exit
 
+## Install git, clone and setup your Catalog App project.
+1. Install Git using sudo apt-get install git
+2. Use cd /var/www to move to the /var/www directory
+3. Create the application directory sudo mkdir catalog
+4. Move inside this directory using cd catalog
+5. Clone the Catalog App to the virtual machine git clone https://github.com/rphadol/Catalog-App
+6. Rename the project's name sudo mv ./Catalog-App ./catalog
+7. Move to the inner catalog directory using cd catalog
+8. Rename project.py to __init__.py using sudo mv project.py __init__.py
+9. Edit database_setup.py, project.py and lotsofdata.py and change 'engine = create_engine('sqlite:///catalog.db')' to engine = create_engine('postgresql://catalog:password@localhost/catalog')
+10. Install pip sudo apt-get install python-pip
+11. Use pip to install dependencies sudo pip install -r requirements.txt
+12. Install psycopg2 sudo apt-get -qqy install postgresql python-psycopg2
+13. To Create database schema  run: sudo python database_setup.py
+14. to populate data run: sudo python lotsofdata.py
+
+## Configure and Enable a New Virtual Host
+Create FlaskApp.conf to edit: sudo nano /etc/apache2/sites-available/FlaskApp.conf
+
+Add the following lines of code to the file to configure the virtual host.
+
+            <VirtualHost *:80>
+                  ServerName 52.24.125.52
+                  WSGIDaemonProcess catalog python-path=/home/grader/.local/lib/python2.7/site-packages
+                  WSGIScriptAlias / /var/www/catalog/catalog.wsgi
+                  <Directory /var/www/catalog/catalog/>
+                        Order allow,deny
+                        Allow from all
+                  </Directory>
+                  Alias /static /var/www/catalog/catalog/static
+                  <Directory /var/www/catalog/catalog/static/>
+                        Order allow,deny
+                        Allow from all
+                  </Directory>
+                  ErrorLog ${APACHE_LOG_DIR}/error.log
+                  LogLevel warn
+                  CustomLog ${APACHE_LOG_DIR}/access.log combined
+            </VirtualHost>
+            
+Enable the virtual host with the following command: sudo a2ensite catalog
