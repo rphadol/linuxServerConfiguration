@@ -214,7 +214,8 @@ Enable the virtual host with the following command: sudo a2ensite catalog
 
 ## Update OAuth authorized JavaScript origins
 To let users correctly log-in change the authorized URI to http://18.222.164.3.xip.io/ on both Google and Facebook developer dashboards.
-2. after saving the URI download new json file copy the file into client_secrets.json
+2. after saving the URI download new json file copy content of the file into client_secrets.json file on VM.
+
 
 ## Restart Apache to launch the app
 $ sudo service apache2 restart.
