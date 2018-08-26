@@ -151,26 +151,26 @@ Configure the Uncomplicated Firewall (UFW) to only allow incoming connections fo
 3. Move to the inner catalog directory using 
 
             cd catalog ( /var/www/catalog/catalog)
-8. Rename project.py to __init__.py using 
+4. Rename project.py to __init__.py using 
 
             sudo mv project.py __init__.py
-9. Edit database_setup.py,  __init__.py, lotsofdata.py and change 
+5. Edit database_setup.py,  __init__.py, lotsofdata.py and change 
 
             engine = create_engine('sqlite:///catalog.db') to 
             engine = create_engine('postgresql://catalog:sillypassword@localhost/catalog')
-10. Install pip
+6. Install pip
 
             sudo apt-get install python-pip
-11. Install psycopg2 
+7. Install psycopg2 
 
             sudo apt-get -qqy install postgresql python-psycopg2
-12. Setup the database with: 
+8. Setup the database with: 
 
             $ cd /var/www/catalog/catalog/  python database_setup.py
-13. to populate data run: 
+9. to populate data run: 
 
                         sudo python lotsofdata.py
-14.cd catalog directory and create catalog.wsgi file 
+10.cd catalog directory and create catalog.wsgi file 
 
                   cd /var/www/catalog 
                   sudo nano catalog.wsgi 
