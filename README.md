@@ -101,6 +101,18 @@ Configure the Uncomplicated Firewall (UFW) to only allow incoming connections fo
 
 9. Exit from user "postgres" by typing exit
 
+## Install git.
+1. Install Git using 
+      
+            sudo apt-get install git
+2. Use cd /var/www to move to the /var/www directory
+3. Create the application directory 
+
+            sudo mkdir catalog
+4. Move inside this directory using: 
+
+            cd catalog
+
 
 ## Install virtual environment, Flask and the project's dependencies
 1. Install pip, the tool for installing Python packages: 
@@ -129,28 +141,20 @@ Configure the Uncomplicated Firewall (UFW) to only allow incoming connections fo
             $ pip install bleach httplib2 request oauth2client sqlalchemy python-psycopg2.
 (You may need to use sudo for pip installation)
 
-## Install git, clone and setup your Catalog App project.
-1. Install Git using 
-      
-            sudo apt-get install git
-2. Use cd /var/www to move to the /var/www directory
-3. Create the application directory 
 
-            sudo mkdir catalog
-4. Move inside this directory using: 
 
-            cd catalog
-5. Clone the Catalog App to the virtual machine git clone https://github.com/rphadol/Catalog-App
-6. Rename the project's name 
+## clone and setup your Catalog App project
+1. Clone the Catalog App to the virtual machine git clone https://github.com/rphadol/Catalog-App
+2. Rename the project's name 
 
             sudo mv ./Catalog-App ./catalog
-7. Move to the inner catalog directory using 
+3. Move to the inner catalog directory using 
 
             cd catalog ( /var/www/catalog/catalog)
 8. Rename project.py to __init__.py using 
 
             sudo mv project.py __init__.py
-9. Edit database_setup.py, project.py and lotsofdata.py and change 
+9. Edit database_setup.py,  __init__.py, lotsofdata.py and change 
 
             engine = create_engine('sqlite:///catalog.db') to 
             engine = create_engine('postgresql://catalog:sillypassword@localhost/catalog')
@@ -162,11 +166,13 @@ Configure the Uncomplicated Firewall (UFW) to only allow incoming connections fo
             sudo apt-get -qqy install postgresql python-psycopg2
 12. Setup the database with: 
 
-            $ python /var/www/catalog/catalog/python database_setup.py
-13. to populate data run: sudo python lotsofdata.py
+            $ cd /var/www/catalog/catalog/  python database_setup.py
+13. to populate data run: 
+
+                        sudo python lotsofdata.py
 14.cd catalog directory and create catalog.wsgi file 
 
-                  cd /var/www/catalog.wsgi
+                  cd /var/www/catalog 
                   sudo nano catalog.wsgi 
 and copy the following code and save it
 
