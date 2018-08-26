@@ -34,7 +34,7 @@ Application URL: http://18.222.164.3.xip.io/
 ## Configure the key-based authentication for grader user
 1. Generate an encryption key on your local machine with: 
 
-            $ ssh-keygen  and then enter the path -f ~/.ssh/udacity_key.rsa. after that enter paraphrase.
+            $ ssh-keygen  and then enter the path -f ~/.ssh/graderprv.ppk. after that enter paraphrase.
 2. Log into the remote VM as root user through ssh and create the following file: 
 
             $ touch /home/grader/.ssh/authorized_keys.
@@ -44,7 +44,7 @@ Application URL: http://18.222.164.3.xip.io/
        $ sudo chmod 700 /home/grader/.ssh.
        $ sudo chmod 644 /home/grader/.ssh/authorized_keys.
 5. Finally change the owner from root to grader: $ sudo chown -R grader:grader /home/grader/.ssh.
-6. Now you are able to log into the remote VM through ssh with the following command: $ ssh -i ~/.ssh/udacity_key.rsa grader@18.222.164.3 (ssh -i [privateKeyFilename] grader@18.222.164.3)
+6. Now you are able to log into the remote VM through ssh with the following command: $ ssh -i ~/.ssh/graderprv.ppk grader@18.222.164.3 (ssh -i [privateKeyFilename] grader@18.222.164.3)
 
 
 ## Configure the Uncomplicated Firewall (UFW)
