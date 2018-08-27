@@ -225,3 +225,8 @@ To let users correctly log-in change the authorized URI to http://18.222.164.3.x
 
 ## Restart Apache to launch the app
 $ sudo service apache2 restart.
+
+# References:
+
+https://github.com/kongling893/
+https://github.com/iliketomatoes/
